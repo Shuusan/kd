@@ -1,0 +1,12 @@
+{
+    "configurations": [
+      {
+        "name": "第二ＳＩ技術部",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "debug",
+        "args": ["--web-port", "8080"]
+      }
+    ]
+  }
+  
