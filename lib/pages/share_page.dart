@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../pages_components/share_page/share_information_list.dart';
 import '../pages_controllers/share_page_controller.dart';
 
 class SharePage extends StatelessWidget {
@@ -30,65 +31,7 @@ class SharePage extends StatelessWidget {
                 return const Center(child: Text('No information available'));
               }
 
-              return ListView.builder(
-                itemCount: controller.shareInformation.length,
-                itemBuilder: (context, index) {
-                  var info = controller.shareInformation[index];
-                  return Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.info_rounded),
-                      title: Text(info['info_title']),
-                      subtitle: Text(
-                          '${info['info_subtitle']} ... ${info['date_added']}'),
-                      trailing: SizedBox(
-                        width: 120,
-                        child: Row(
-                          children: [
-                            Tooltip(
-                              message: '削除',
-                              child: IconButton(
-                                onPressed: () {
-                                  // Handle delete action here
-                                },
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                            Tooltip(
-                              message: 'データ編集',
-                              child: IconButton(
-                                onPressed: () {
-                                  // Handle edit action here
-                                },
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.cyan,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                            Tooltip(
-                              message: 'クリップボードにコピー',
-                              child: IconButton(
-                                onPressed: () {
-                                  // Handle copy to clipboard action here
-                                },
-                                icon: const Icon(
-                                  Icons.copy,
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
+              return ShareInformationList(controller: controller);
             }),
           ),
         ],
