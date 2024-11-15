@@ -3,7 +3,14 @@ import 'package:get/get.dart';
 import '../../pages_controllers/factory_automation_page_controller.dart';
 
 class WaterPipeHorizontal extends StatefulWidget {
-  const WaterPipeHorizontal({super.key});
+  const WaterPipeHorizontal({
+    super.key,
+    required this.height,
+    required this.width,
+  });
+
+  final double height;
+  final double width;
 
   @override
   State<WaterPipeHorizontal> createState() => _WaterPipeHorizontalState();
@@ -35,23 +42,24 @@ class _WaterPipeHorizontalState extends State<WaterPipeHorizontal>
   Widget build(BuildContext context) {
     final controller = Get.find<FactoryAutomationPageController>();
 
-    return Container(
-      width: Get.width * .15, // Length of the pipe
-      height: Get.height * .020, // Thickness of the pipe
-      decoration: BoxDecoration(
-        color: Colors.grey, // Pipe color
-        borderRadius: BorderRadius.circular(20), // Rounded edges
-        border: Border.all(
-          color: Colors.black, // Pipe border color
-          width: 3, // Pipe border thickness
+    return Obx(
+      () => AnimatedContainer(
+        duration: Durations.short4,
+        width: widget.width * .15, // Length of the pipe
+        height: widget.height * .02, // Thickness of the pipe
+        decoration: BoxDecoration(
+          color: controller.isPumpOn ? Colors.white : Colors.grey, // Pipe color
+          borderRadius: BorderRadius.circular(20), // Rounded edges
+          border: Border.all(
+            color: Colors.black, // Pipe border color
+            width: 3, // Pipe border thickness
+          ),
         ),
-      ),
 
-      // Water flow
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Obx(
-          () => Visibility(
+        // Water flow
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Visibility(
             visible: controller
                 .isPumpOn, // Show water only if animating (pump is on)
             child: Row(
@@ -64,37 +72,13 @@ class _WaterPipeHorizontalState extends State<WaterPipeHorizontal>
                         animation: _animation,
                         builder: (context, child) {
                           return Positioned(
-                            left: -Get.width * .15 +
-                                (_animation.value * Get.width * .3),
+                            left: -widget.width * .05 +
+                                (_animation.value * widget.width * .2),
                             child: child!,
                           );
                         },
                         child: _buildWaterContainer(),
                       ),
-                      // Second water container
-                      AnimatedBuilder(
-                        animation: _animation,
-                        builder: (context, child) {
-                          return Positioned(
-                            left: -Get.width * .3 +
-                                (_animation.value * Get.width * .3),
-                            child: child!,
-                          );
-                        },
-                        child: _buildWaterContainer(),
-                      ),
-                      // // Third water container
-                      // AnimatedBuilder(
-                      //   animation: _animation,
-                      //   builder: (context, child) {
-                      //     return Positioned(
-                      //       left: -Get.width * .45 +
-                      //           (_animation.value * Get.width * .3),
-                      //       child: child!,
-                      //     );
-                      //   },
-                      //   child: _buildWaterContainer(),
-                      // ),
                     ],
                   ),
                 ),
@@ -109,8 +93,8 @@ class _WaterPipeHorizontalState extends State<WaterPipeHorizontal>
   // Build individual water container
   Widget _buildWaterContainer() {
     return Container(
-      width: Get.width * .05, // Water bubble width
-      height: Get.height * .020, // Thickness of water same as pipe
+      width: widget.width * .05, // Water bubble width
+      height: widget.height * .020, // Thickness of water same as pipe
       color: Colors.blue, // Water color
     );
   }

@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class FactoryAutomationPageController extends GetxController {
   // Observable list to hold the data fetched from the API
