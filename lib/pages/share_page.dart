@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../pages_components/share_page/share_information_list.dart';
 import '../pages_controllers/share_page_controller.dart';
+import '../pages_methods/share_page_methods.dart';
 
 class SharePage extends StatelessWidget {
   const SharePage({super.key});
@@ -15,6 +16,14 @@ class SharePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("共有情報"),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showAddDialog(context, (newInfo) async {
+            await controller.addShareInfo(newInfo);
+          });
+        },
+        child: const Icon(Icons.add),
       ),
       body: Column(
         children: [

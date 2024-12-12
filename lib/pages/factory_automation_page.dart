@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kd/pages_components/factory_automation_page/water_pipe_horizontal.dart';
 import 'package:kd/pages_controllers/factory_automation_page_controller.dart';
-import 'package:kd/settings/assets_file.dart';
 
 import '../pages_components/factory_automation_page/pomp.dart';
 

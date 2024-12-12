@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:kd/pages_controllers/share_page_controller.dart';
+
+import '../../pages_methods/share_page_methods.dart';
 
 class ShareInformationList extends StatelessWidget {
   const ShareInformationList({
@@ -22,7 +26,9 @@ class ShareInformationList extends StatelessWidget {
               color: info.infoLevel <= 1 ? Colors.blueGrey : Colors.redAccent,
             ),
             title: Text(info.infoTitle),
-            subtitle: Text(info.infoSubtitle),
+            subtitle: Text(
+                "${info.infoSubtitle}\n${info.dateModified ?? info.dateAdded}"),
+            isThreeLine: true,
             trailing: SizedBox(
               width: 120,
               child: Column(
@@ -33,8 +39,8 @@ class ShareInformationList extends StatelessWidget {
                       Tooltip(
                         message: '削除',
                         child: IconButton(
-                          onPressed: () {
-                            // Handle delete action here
+                          onPressed: () async {
+                            await controller.deleteShareInfo(info.infoId);
                           },
                           icon: const Icon(
                             Icons.delete,
@@ -47,7 +53,14 @@ class ShareInformationList extends StatelessWidget {
                         message: 'データ編集',
                         child: IconButton(
                           onPressed: () {
-                            // Handle edit action here
+                            showEditDialog(
+                              context,
+                              info,
+                              (updatedInfo) async {
+                                await controller.updateShareInfo(
+                                    updatedInfo); // Call the update method in the controller
+                              },
+                            );
                           },
                           icon: const Icon(
                             Icons.edit,
@@ -56,18 +69,27 @@ class ShareInformationList extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Tooltip(
-                        message: 'クリップボードにコピー',
-                        child: IconButton(
-                          onPressed: () {
-                            // Handle copy to clipboard action here
-                          },
-                          icon: const Icon(
-                            Icons.copy,
-                            size: 20,
+                      if (info.copyActive)
+                        Tooltip(
+                          message: 'クリップボードにコピー',
+                          child: IconButton(
+                            onPressed: () {
+                              Clipboard.setData(
+                                  ClipboardData(text: info.infoSubtitle));
+                              Get.snackbar(
+                                'Copied to clipboard!',
+                                info.infoSubtitle,
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white,
+                                onTap: (_) => Get.back(),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.copy,
+                              size: 20,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ],
